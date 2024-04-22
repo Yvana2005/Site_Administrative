@@ -1,9 +1,15 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
+from sqlalchemy import engine_from_config, MetaData
 from sqlalchemy import pool
 
 from alembic import context
+from sqlalchemy.orm import sessionmaker
+from model import Base, User, Acte, Ordre, Destinataire, Piece_Jointe, Paiement, Acte_Naissance, Acte_Deces 
+from sqlalchemy import create_engine
+
+
+# Autres importations spécifiques à votre projet
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -39,7 +45,7 @@ def run_migrations_offline() -> None:
 
     """
     url = config.get_main_option("sqlalchemy.url")
-    url = "postgresql://postgres:root@localhost:5432/fastapi_db"
+    db_url = "postgresql://postgres:root@localhost:5432/fastapi_db"
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -49,7 +55,20 @@ def run_migrations_offline() -> None:
 
     with context.begin_transaction():
         context.run_migrations()
+        metadata = MetaData()
+       
+        engine = create_engine(db_url)
+        metadata.reflect(bind=engine)
+        metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
 
+# Fournissez l'objet MetaData au contexte Alembic
+        context.configure(
+    # ...
+             target_metadata=metadata,
+    # ...
+        )
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
