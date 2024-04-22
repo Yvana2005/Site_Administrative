@@ -39,7 +39,7 @@ def run_migrations_offline() -> None:
 
     """
     url = config.get_main_option("sqlalchemy.url")
-    url = "postgresql://postgres:root@localhost/mydatabase"
+    url = "postgresql://postgres:root@localhost:5432/fastapi_db"
     context.configure(
         url=url,
         target_metadata=target_metadata,
