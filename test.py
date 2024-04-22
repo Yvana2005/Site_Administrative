@@ -1,6 +1,6 @@
 
 from sqlalchemy import create_engine, Column, Integer, String
-from model import Base, User
+from model import Base, User, Acte
 
 from sqlalchemy.orm import sessionmaker
 from databases import Database
@@ -32,11 +32,16 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-new_user = User(name="John Doe", age=30)
+new_user = User(name="JohnDoe", forename="30", num_TelUser="687954326", dtecreatedUser="12-02-24", hashed_password="vfyhrm?")
 session.add(new_user)
 session.commit()
 
 # Récupérer tous les utilisateurs
 users = session.query(User).all()
 for user in users:
-    print(user.name, user.age)
+    print(user.name, user.forename, user.num_TelUser, user.dtecreatedUser, user.hashed_password)
+
+#https://stacklima.com/comment-dockeriser-une-application-reactjs/
+#https://www.freecodecamp.org/news/how-to-dockerize-a-react-application/
+#https://dev.to/ayesh_nipun/how-to-dockerize-a-react-application-kpa
+#docker run -d -p 4000:80 -nom docker-react-container docker-react-image:1.0
